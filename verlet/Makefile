@@ -74,7 +74,7 @@ endif
 ##---------------------------------------------------------------------
 
 $(ODIR)/%.o:%.cpp
-	@mkdir ../build
+	@mkdir -p ../build
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(ODIR)/%.o:$(IMGUI_DIR)/%.cpp
