@@ -27,7 +27,8 @@ int main() {
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init((char*)"#version 130");
     glClearColor(0.3, 0.3, 0.3, 0);
-
+    
+    struct Ball ball1;
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
@@ -35,7 +36,7 @@ int main() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        loop();
+        loop(ball1);
         
         ImGui::End();
         ImGui::Render();
