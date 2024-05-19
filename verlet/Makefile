@@ -21,7 +21,8 @@ IMGUI_DIR = ../imgui
 SOURCES = main.cpp
 SOURCES += $(IMGUI_DIR)/imgui.cpp $(IMGUI_DIR)/imgui_draw.cpp $(IMGUI_DIR)/imgui_tables.cpp $(IMGUI_DIR)/imgui_widgets.cpp
 SOURCES += $(IMGUI_DIR)/backends/imgui_impl_glfw.cpp $(IMGUI_DIR)/backends/imgui_impl_opengl3.cpp
-OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
+ODIR = ../build
+OBJS = $(patsubst %, $(ODIR)/%, $(addsuffix .o, $(basename $(notdir $(SOURCES)))))
 UNAME_S := $(shell uname -s)
 LINUX_GL_LIBS = -lGL
 
@@ -72,16 +73,18 @@ endif
 ## BUILD RULES
 ##---------------------------------------------------------------------
 
-%.o:%.cpp
+$(ODIR)/%.o:%.cpp
+	@mkdir ../build
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-%.o:$(IMGUI_DIR)/%.cpp
+$(ODIR)/%.o:$(IMGUI_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-%.o:$(IMGUI_DIR)/backends/%.cpp
+$(ODIR)/%.o:$(IMGUI_DIR)/backends/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 all: $(EXE)
+	# mv *.o ../$(ODIR)
 	@echo Build complete for $(ECHO_MESSAGE)
 
 $(EXE): $(OBJS)
@@ -91,4 +94,4 @@ clean:
 	rm -f $(EXE) $(OBJS)
 
 nick_clean:
-	rm -f ${OBJS}
+	rm -f $(ODIR)/${OBJS}
