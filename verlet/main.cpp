@@ -11,9 +11,16 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include <GLFW/glfw3.h>
+#include <unistd.h>
+
+#define WINDOW_TITLE "verlet"
+#define WINDOW_WIDTH 500
+#define WINDOW_HEIGHT 500
 
 // User source files.
-#include "loop.h"
+#include "Ball.cpp"
+
+using namespace ImGui;
 
 int main() {
     glfwInit();
@@ -28,7 +35,8 @@ int main() {
     ImGui_ImplOpenGL3_Init((char*)"#version 130");
     glClearColor(0.3, 0.3, 0.3, 0);
     
-    struct Ball ball1;
+    static Ball ball1;
+    float initialTime = glfwGetTime();
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
@@ -36,8 +44,28 @@ int main() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        loop(ball1);
-        
+        ImGui::SetNextWindowPos(ImGui::GetMainViewport()->WorkPos);
+        ImGui::SetNextWindowSize(ImGui::GetMainViewport()->WorkSize);
+
+        static char buf[32] = "";
+
+        float finalTime = glfwGetTime();
+        float deltaTime = finalTime - initialTime;
+        initialTime = finalTime;
+
+        ImGui::Begin("Verlet");
+
+        ImVec2 cursorPos = ImGui::GetCursorScreenPos();
+
+        ball1.refresh(deltaTime,WINDOW_WIDTH);
+        ball1.tc += deltaTime;
+
+        // Debugging text values
+        sprintf(buf, "time: %.3f s", ball1.tc); ImGui::Text(buf[0] ? buf : "Null");
+        sprintf(buf, "position y: %.3f m", ball1.position_y); ImGui::Text(buf[0] ? buf : "Null");
+        sprintf(buf, "acceleration: %.3f m/s^2", ball1.accelleration); ImGui::Text(buf[0] ? buf : "Null");
+        sprintf(buf, "velocity: %.3f m/s", ball1.velocity); ImGui::Text(buf[0] ? buf : "Null");
+
         ImGui::End();
         ImGui::Render();
         glClear(GL_COLOR_BUFFER_BIT);

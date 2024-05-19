@@ -1,59 +1,22 @@
 #include "imgui.h"
 
 struct Ball {
-    float mass = 1.0;     // Creates the mass variable of the ball
-    float radius = 50;  // Creates the radius variable of the ball
+    // Ball Variables
+    float mass = 1.0f;
+    float radius = 50.0f;
+    float force = -9.8f;
+    float tc = 0.0f;
 
-    float dt;           // Creates the delta time variable 
+    // Motion Variables
+    float accelleration = force / mass;
+    float velocity = 0.0f;
+    float position_y = 0.0f;
 
-    // Retrieves the ImGui config data from the GetIO function
-    ImGuiIO &io = ImGui::GetIO();
-    float windowWidth;       // Defines window width 
-    float windowHeight;      // Defines window height
+    void refresh(float deltaTime, float windowWidth){
+        velocity += accelleration * deltaTime;
+        position_y += velocity * deltaTime;
 
-    float origin_x = windowWidth/2;     // Defines the center of the x axis
-    float origin_y = windowHeight/2;    // Defines the center of the y axis
-
-    // Current motion. Replaced by new motion.
-    struct acceleration { float x, y = 0; } acceleration;       // Creates the acceleration struct
-    struct velocity     { float x, y = 0; } velocity;           // Creates the velocity struct
-    struct position     { float x, y = 0; } position;           // Creates the position struct
-    
-    // Constructor for Ball
-    Ball() {
-                                                           
-    }
-    
-    void update(float dt) {      
-        updateVelocity(dt);     // Updates velocity as a function of delta time
-        updatePosition(dt);     // Updates position as a function of delta time
-
-
-        draw();                 // Calls the draw function to draw the circle
-    }
-
-    void applyForce(float force_x, float force_y) {
-        acceleration.x = force_x / mass;
-        acceleration.y = force_y / mass;
-    }
-
-    // Integrate velocity.
-    void updateVelocity(float dt) {
-        velocity.x += acceleration.x * dt;
-        velocity.y += acceleration.y * dt;
-    }
-
-    // Integrate position.
-    void updatePosition(float dt) {
-        position.x += velocity.x * dt;
-        position.y += velocity.y * dt;
-    }
-
-    void draw(){
-        // Calls the draw_list object
         ImDrawList* draw_list = ImGui::GetWindowDrawList();
-
-        // Error possibility 2
-        draw_list->AddCircleFilled(ImVec2(origin_x + position.x, origin_y + position.y), radius, IM_COL32(255, 255, 0, 255));
+        draw_list->AddCircleFilled(ImVec2(windowWidth/2.0f, position_y - 2 * position_y), radius, IM_COL32(255,255,0,255));
     }
 };
