@@ -20,8 +20,10 @@ inline void makeFullscreen() {
 static char buf[32] = "";
 
 
+
+
 // Main Loop
-void loop(Ball ball1) {
+void loop(Ball& ball1) {
     makeFullscreen();                                       // Calls fullscreen function
 
     ImGuiIO &io = GetIO();                                   // Calls the GetIO function to retrieve the config settings
@@ -38,9 +40,9 @@ void loop(Ball ball1) {
 
 
     float dt = ImGui::GetIO().DeltaTime;                    // Sets delta time variable which is equivalent to 1/60 of a second
-    
-    ball1.applyForce(0, -9.8);                              // Applies a force of -9.8y to the ball via the applyForce function      
-    ball1.update(dt);                                       // Updates the ball via running the update method
+
+    // ball1.applyForce(0, -9.8);                              // Applies a force of -9.8y to the ball via the applyForce function      
+    ball1.update(dt);                                          // Updates the ball via running the update method
 
     // Debugging text for values
     sprintf(buf, "dt: %.3f", dt); ImGui::Text(buf[0] ? buf : "Null");
@@ -52,5 +54,4 @@ void loop(Ball ball1) {
     sprintf(buf, "y_acc: %.2f", ball1.acceleration.y); ImGui::Text(buf[0] ? buf : "Null"); 
     sprintf(buf, "origin_x: %.2f", ball1.origin_x); ImGui::Text(buf[0] ? buf : "Null"); SameLine(150);
     sprintf(buf, "origin_y: %.2f", ball1.origin_y); ImGui::Text(buf[0] ? buf : "Null"); 
-
 }
