@@ -7,6 +7,7 @@ struct Ball {
     float mass = 1.0;     // Creates the mass variable of the ball
     float radius = 50;  // Creates the radius variable of the ball
     int count = 0;
+    int id;
 
     float dt;           // Creates the delta time variable 
 
@@ -24,8 +25,8 @@ struct Ball {
     struct position     { float x, y = 0; } position;           // Creates the position struct
     
     // Constructor for Ball
-    Ball() {
-        printf("ball constructed\n");
+    Ball(int id) {
+        printf("ball %d constructed\n", id);
     }
     
     void update(float dt) {      
@@ -56,7 +57,8 @@ struct Ball {
     void draw(){
         // Calls the draw_list object
         ImDrawList* draw_list = ImGui::GetWindowDrawList();
-
+        char buf[32] = ""; sprintf(buf, "position: %f, %f", position.x, position.y); ImGui::Text(buf[0] ? buf : "Null");
+        // printf("drawn\n");
         draw_list->AddCircleFilled(ImVec2(origin_x + position.x, origin_y + position.y), radius, IM_COL32(255, 255, 0, 255));
     }
 };
