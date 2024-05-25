@@ -40,9 +40,8 @@ void loop(Solver* solver) {
     float dt = ImGui::GetIO().DeltaTime;                    // Sets delta time variable which is equivalent to 1/60 of a second
 
 
-    if (count++ < 10) {
+    if (count++ < 5) {
         solver->addBall();
-        printf("count: %d\n", count);
     }
 
     solver->solve();
