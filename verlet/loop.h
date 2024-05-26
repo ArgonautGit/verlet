@@ -40,11 +40,12 @@ void loop(Solver* solver) {
     float dt = ImGui::GetIO().DeltaTime;                    // Sets delta time variable which is equivalent to 1/60 of a second
 
 
-    if (count++ < 5) {
+    if (count++ < 2) {
         solver->addBall();
     }
 
-    solver->solve();
+    solver->drawBounds();
+    solver->solve(dt);
 
     // // Debugging text for values
     // sprintf(buf, "dt: %.3f", dt); ImGui::Text(buf[0] ? buf : "Null");

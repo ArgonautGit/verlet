@@ -20,7 +20,7 @@ struct Ball {
     double origin_y = windowHeight/2;    // Defines the center of the y axis
 
     // Current motion.
-    struct acceleration { double x, y = -9.8; } acceleration;       // Creates the acceleration struct
+    struct acceleration { double x, y = -100; } acceleration;       // Creates the acceleration struct
     struct velocity     { double x, y; } velocity;           // Creates the velocity struct
     struct position     { double x, y; } position;           // Creates the position struct
     
@@ -54,8 +54,6 @@ struct Ball {
         position.x += velocity.x * dt;
         position.y += velocity.y * dt;
 
-        // Debug
-        position.x -= id * 0.25;
     }
 
     void draw(){
